@@ -11,17 +11,17 @@
 namespace nemo {
 
 inline uint64_t EncodeScore(const double score) {
-    int64_t iscore;
+    uint64_t iscore;
     if (score < 0) {
-        iscore = (int64_t)(score * 100000LL - 0.5) + ZSET_SCORE_SHIFT;
+        iscore = (uint64_t)(score + ZSET_SCORE_SHIFT);
     } else {
-        iscore = (int64_t)(score * 100000LL + 0.5) + ZSET_SCORE_SHIFT;
+        iscore = (uint64_t)(score) + ZSET_SCORE_SHIFT;
     }
-    return (uint64_t)(iscore);
+    return iscore;
 }
 
 inline double DecodeScore(const int64_t score) {
-    return (double)(score - ZSET_SCORE_SHIFT) / 100000.0; 
+    return (double)(score - ZSET_SCORE_SHIFT); 
 }
 
 inline std::string EncodeZSetKey(const rocksdb::Slice &key, const rocksdb::Slice &member) {
